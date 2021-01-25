@@ -1,3 +1,0 @@
-function formatTime(timestamp, fmt) {
-    //....
-}
