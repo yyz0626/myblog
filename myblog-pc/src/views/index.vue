@@ -1,69 +1,122 @@
 <template>
-  <div class="blog-list">
-    <div class="blog" v-for="item in blogList" :key="item.blogId">
-      <h3 class="blog-title">
-        <router-link :to="{ path: '/blog/detail/' + item.blog_id }">{{
-          item.title
-        }}</router-link>
-      </h3>
-      <p class="blog-content">{{ item.content }}</p>
-      <span class="post-time">{{ item.postTime }}</span>
+  <div class="container">
+    <div class="pic">1</div>
+
+    <div class="blog-list" v-for="item in dataShow" :key="item.blog_Id">
+      <router-link :to="{ path: '/blog/detail/' + item.blog_id }" tag="div">
+        <div class="post-time">
+          <span>{{ item.blog_time | dateFormat }}</span>
+          <span> + {{ item.blog_length }}字 </span>
+        </div>
+        <div class="blog-title">
+          <h1>{{ item.title }}</h1>
+        </div>
+        <!-- <div id="blog_detail">123</div> -->
+        <!-- <p id="blog-content">{{ item.blog_content }}</p> -->
+      </router-link>
     </div>
-    <button @click="logout">登出</button>
-    <p>你好，{{ uname }}</p>
+    <div class="block">
+      <el-pagination
+        layout="prev, pager, next"
+        :total="total"
+        @next-click="nextPage"
+        @prev-click="prePage"
+        :current-page.sync="currentPage"
+        @current-change="clog"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      blogList: [],
+      total: 0,
+      data: [],
       uname: "",
+      totalPage: [],
+      pageSize: 5,
+      pageNum: 1,
+      dataShow: "",
+      currentPage: 0,
     };
   },
   created() {
     this.getData();
-    this.getUserName();
   },
   methods: {
     getData() {
       this.$http.get("/blog/list").then((res) => {
-        let { state } = res.data;
-        if (state == "auto-fail") {
-          alert("请求未授权！-then");
-        } else {
-          let { blogs } = res.data;
-          this.blogList = blogs;
+        let { blogs } = res.data;
+        this.data = blogs;
+        this.pageNum = Math.ceil(this.data.length / this.pageSize) || 1;
+        this.total = this.pageNum * 10;
+        for (let i = 0; i < this.pageNum; i++) {
+          this.totalPage[i] = this.data.slice(
+            this.pageSize * i,
+            this.pageSize * (i + 1)
+          );
         }
+        this.dataShow = this.totalPage[this.currentPage - 1];
       });
     },
-    getUserName() {
-      var uname = localStorage.getItem("myname");
-      this.uname = uname;
+    nextPage() {
+      if (this.currentPage === this.pageNum - 1) return;
+      this.dataShow = this.totalPage[++this.currentPage];
     },
-    logout() {
-      this.$store.dispatch("logout");
-      location.href = "/login";
+    // 上一页
+    prePage() {
+      if (this.currentPage === 0) return;
+      this.dataShow = this.totalPage[--this.currentPage];
     },
+    clog() {
+      this.dataShow = this.totalPage[this.currentPage - 1];
+    },
+    // setDetail() {
+    //   var blog_content = document.getElementById("blog-content");
+    //   var demoHtml = blog_content.innerHTML.slice(0, 20) + "......";
+    //   console.log(demoHtml);
+    //   blog_content.innerHTML = demoHtml;
+    // },
   },
 };
 </script>
 
+
 <style lang="scss" scoped>
+.pic {
+  background: url(../assets/bg12.jpg);
+  height: 400px;
+}
 .blog-list {
-  width: 815px;
+  width: 700px;
+  height: 200px;
+  cursor: pointer;
   margin: 20px auto;
+  border: 3px solid black;
+  padding: 20px;
 }
 
-.blog {
-  background: #cccccc;
-  padding: 20px;
-  margin: 20px 0;
+.blog-list:hover {
+  border-color: rgb(189, 99, 99);
+  h1 {
+    color: rgb(189, 99, 99);
+  }
 }
 
 .blog-title,
 .blog-content,
 .post-time {
-  margin: 20px 0;
+  margin: 10px 0;
+  text-align: left;
+}
+.post-time {
+  color: rgb(153, 153, 153);
+  margin-top: 0;
+  font-size: 16px;
+}
+.block {
+  margin-bottom: 30px;
 }
 </style>

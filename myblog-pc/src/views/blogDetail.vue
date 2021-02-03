@@ -1,20 +1,32 @@
 <template>
   <div class="container">
     <div class="blog">
-      <div class="blog-title">
-        <h3>{{ blog[0].title }}</h3>
-        <span>{{ blog[0].blog_time }}</span>
-        <div class="blog-content">{{ blog[0].blog_content }}</div>
+      <div>
+        <div class="blog-title">
+          {{ blog[0].title }}
+        </div>
+        <span>{{ blog[0].blog_time | dateFormat }}</span>
       </div>
+      <div class="blog-content">{{ blog[0].blog_content }}</div>
     </div>
-    <h1>评论</h1>
-    <input type="text" v-model="comment" placeholder="在这里写下评论..." />
-    <button @click="push">发表</button>
-    <div class="comments" v-for="items in commentsList" :key="items.comm_id">
-      <div class="comment">{{ items.comm_content }}</div>
-      <div class="comment-info">
-        <span class="nickname">{{ items.nickname }}</span>
-        <span class="comm_time">{{ items.comm_time }}</span>
+    <div class="line"></div>
+    <div class="comment">
+      <div class="comment-title">添加新评论</div>
+      <el-input
+        type="textarea"
+        :autosize="{ minRows: 5, maxRows: 8 }"
+        placeholder="在这里输入你的评论"
+        v-model="comment"
+        style="margin-bottom: 20px"
+      >
+      </el-input>
+      <el-button type="info" round @click="push">提交评论</el-button>
+
+      <div class="comments" v-for="items in commentsList" :key="items.comm_id">
+        <img :src="imgUrl" class="comment-img" />
+        <div class="comment-content">{{ items.comm_content }}</div>
+        <div class="nickname">{{ items.nickname }}</div>
+        <div class="comment-time">{{ items.comm_time | dateFormat }}</div>
       </div>
     </div>
   </div>
@@ -24,6 +36,11 @@
 export default {
   data() {
     return {
+      imgUrl: require("../static/github.jpg"),
+      // textarea2: "",
+      form: {
+        name: "",
+      },
       commentsList: "",
       blog: [],
       comment: "",
@@ -61,6 +78,7 @@ export default {
         });
     },
     push() {
+      // console.log(window.localStoragee);
       this.$http
         .post("/blog/writeComment", {
           comm_content: this.comment,
@@ -83,26 +101,71 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  margin: 50px auto 0;
+  text-indent: 2px;
+}
 .blog {
-  margin: 20px auto;
+  width: 1100px;
+  margin: 20px auto 50px;
   padding: 20px;
-  background: #ccc;
 }
 .blog-title {
   padding: 10px;
+  font-size: 42px;
+  font-weight: 600;
 }
 .blog-content {
   padding: 10px;
+  font-size: 24px;
+}
+.line {
+  height: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.comment {
+  width: 1100px;
+  margin: 20px auto 50px;
+  margin-bottom: 20px;
+}
+
+.comment-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: left;
 }
 .comments {
   margin-top: 20px;
+  height: 100px;
   padding: 20px;
-  background: palegreen;
+  border-bottom: 1px solid #ececec;
+  position: relative;
 }
-.comment-info {
-  float: right;
-  .nickname {
-    margin-right: 10px;
-  }
+.comment-img {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 20px;
+  border-radius: 50%;
+}
+.nickname {
+  position: absolute;
+  left: 110px;
+  top: 20px;
+  font-weight: 600;
+}
+.comment-time {
+  position: absolute;
+  left: 110px;
+  top: 60px;
+  font-size: 14px;
+}
+.comment-content {
+  position: absolute;
+  left: 110px;
+  top: 90px;
+  font-size: 20px;
+  font-weight: 600;
 }
 </style>

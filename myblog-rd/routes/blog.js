@@ -6,11 +6,12 @@ const {
 
 router.prefix('/blog')
 
-router.get('/list', verifyToken, controller.welcome)
-router.get('/comment', verifyToken, controller.getBlogComment)
-router.get('/detail', verifyToken, controller.getBlogDetail)
-router.post('/publish', verifyToken, controller.publishBlog)
+router.get('/list', controller.welcome)
+router.get('/comment', controller.getBlogComment)
+router.get('/detail', controller.getBlogDetail)
+router.post('/publish', controller.publishBlog)
 router.post('/writeComment', verifyToken, controller.writeComment)
+router.post('/delete', controller.delete)
 
 
 

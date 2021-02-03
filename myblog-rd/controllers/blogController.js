@@ -23,11 +23,10 @@ module.exports = {
         }
     },
     async publishBlog(ctx) {
-        // console.log(1);
         let {
             title,
             blog_content,
-            user_id
+            blog_length
         } = ctx.request.body;
         if (title.trim().length == 0) {
             ctx.body = {
@@ -37,7 +36,7 @@ module.exports = {
             let results = await model.saveBlog({
                 title,
                 blog_content,
-                user_id
+                blog_length
             })
             if (results.insertId) {
                 ctx.body = {
@@ -47,6 +46,7 @@ module.exports = {
         }
     },
     async writeComment(ctx) {
+        // console.log(ctx.request);
         let {
             comm_content,
             blog_id,
@@ -62,7 +62,7 @@ module.exports = {
                 blog_id,
                 user_id
             })
-            console.log(results);
+            // console.log(results);
             if (results.insertId) {
                 ctx.body = {
                     message: "评论成功"
@@ -70,4 +70,18 @@ module.exports = {
             } else {}
         }
     },
+    async delete(ctx) {
+        let {
+            blogId
+        } = ctx.request.body;
+        console.log(blogId);
+        let results = await model.deleteBlog(blogId);
+        // console.log(results);
+        if (results) {
+            // console.log(1);
+            ctx.body = {
+                message: '删除成功'
+            }
+        } else {}
+    }
 };

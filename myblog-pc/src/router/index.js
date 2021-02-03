@@ -4,7 +4,6 @@ import Index from '../views/index.vue'
 import Login from '../views/login.vue'
 import blogDetail from '../views/blogDetail.vue'
 import Regist from '../views/regist.vue'
-import Publish from '../views/publish.vue'
 
 
 
@@ -33,11 +32,7 @@ const routes = [{
     name: 'Regist',
     component: Regist
   },
-  {
-    path: '/publish',
-    name: 'Publish',
-    component: Publish
-  },
+
 ]
 
 const router = new VueRouter({

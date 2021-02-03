@@ -32,10 +32,23 @@ instance.interceptors.response.use(
     } = error.response;
     console.log(status);
     if (status == 401) {
-      store.dispatch('logout');
+      // store.dispatch('logout');
+      // this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      //   this.$message({
+      //     type: 'success',
+      //     message: '删除成功!'
+      //   });
+      // })
+      // this.$message('这是一条消息提示');
+
+      alert("登录后才可以评论哦~")
       location.href = "/login";
     }
-    return Promise.reject(error);
+    // return Promise.reject(error);
   }
 );
 

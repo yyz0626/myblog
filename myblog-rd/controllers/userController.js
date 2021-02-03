@@ -78,26 +78,4 @@ module.exports = {
         }
 
     },
-    // let results = await model.saveUser({
-    //     username,
-    //     password,
-    //     nickname
-    // })
-    // if (results.insertId) {
-    //     ctx.body = {
-    //         message: "注册成功"
-    //     }
-    // } else {}
-    //     async checkUser(ctx) {
-    //         let {
-    //             username
-    //         } = ctx.query;
-    //         let results = await model.getUserByUsername(username);
-    //         // console.log(results);
-    //         if (results.length > 0) {
-    //             ctx.body = "fail"
-    //         } else {
-    //             ctx.body = "success"
-    //         }
-    //     }
 };

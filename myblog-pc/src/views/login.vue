@@ -1,6 +1,8 @@
 <template>
   <body>
     <div class="container">
+      <router-link to="/regist">注册</router-link>
+
       <div class="login-form">
         <h3>用户登录</h3>
         <p>用户名：<input type="text" name="username" v-model="username" /></p>

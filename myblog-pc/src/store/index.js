@@ -20,6 +20,7 @@ export default new Vuex.Store({
       state.uname = null;
       localStorage.removeItem('mytoken');
       localStorage.removeItem('myname');
+      localStorage.removeItem('myid');
     },
     setName: (state, uname) => {
       state.uname = uname;
